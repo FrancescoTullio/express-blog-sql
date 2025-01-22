@@ -1,21 +1,21 @@
 const connection = require("../data/db");
 
 const index = (req, res) => {
-    
+
     const sql = "SELECT *   FROM `posts`;";
 
     connection.query(sql, (err, postResults) => {
-         if(err) {
+        if (err) {
             return res.status(500).json({
                 messaggio: "ERRORE DEL SERVER",
                 error: true
             })
-         } else {
+        } else {
             return res.status(200).json({
                 messaggio: "successo",
                 data: postResults
             })
-         }
+        }
     })
 
 }
@@ -25,10 +25,12 @@ const index = (req, res) => {
 const show = (req, res) => {
 
     const postId = req.params.id;
-    const sql =`SELECT * FROM posts WHERE id = ?`;
+    const sql =     `SELECT *
+                    FROM posts
+                    WHERE id = ?    `;
 
-    connection.query(sql, [postId], (err, respPost) =>{
-        if(err) {
+    connection.query(sql, [postId], (err, respPost) => {
+        if (err) {
             return res.status(500).json({
                 messaggio: "ERRORE INTERNO DEL SERVER!"
             })
@@ -40,7 +42,7 @@ const show = (req, res) => {
             })
         } else {
             return res.status(200).json({
-                messaggio:"successo",
+                messaggio: "successo",
                 data: respPost[0]
             })
         }
@@ -49,7 +51,26 @@ const show = (req, res) => {
 
 }
 
+
+const destroy = (req, res) =>{
+
+    const idToDelite = req.params.id;
+
+    const sql = `DELETE FROM posts WHERE id = ?`
+
+    connection.query(sql, [idToDelite], (err) => {
+        if (err) {
+            return res.status(500).json({
+              message: "errore interno del server",
+            });
+          } else {
+            return res.sendStatus(204);
+          }
+    })
+}
+
 module.exports = {
     index,
-    show
+    show,
+    destroy
 }
