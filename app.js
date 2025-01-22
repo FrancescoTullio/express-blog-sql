@@ -14,7 +14,7 @@ app.get("/", (req, res) => {
 })
 
 
-app.use("/", postsRouter)
+app.use("/posts", postsRouter)
 
 app.listen(port, () =>{
     console.log("server partito")
